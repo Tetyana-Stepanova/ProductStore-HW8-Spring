@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Product</title>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+<body>
+<div class="container mt-3">
+  <div class="card text-center">
+    <div class="card-header">
+      <h2>List of Products:</h2><br>
+      <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+      <a href="/createProduct">Create new product</a>
+      </div>
+        <br>
+      <div>
+        <table class="table" align="center" border="5" frame="border" cellpadding="10">
+          <thead>
+          <tr>
+            <th>UUID</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Manufacturer</th>
+            <th sec:authorize="hasAuthority('ROLE_ADMIN')">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="product : ${listProducts}">
+            <td th:text="${product.uuid}">Product ID</td>
+            <td th:text="${product.productName}">Name</td>
+            <td th:text="${product.price}">Price</td>
+            <td th:text="${product.manufacturer.manufName}">Manufacturer</td>
+            <td sec:authorize="hasAuthority('ROLE_ADMIN')">
+              <a th:href="@{'/updateProduct/' + ${product.uuid}}">Update</a>
+              &nbsp;&nbsp;&nbsp;
+              <a th:href="@{'/deleteProduct/' + ${product.uuid}}">Delete</a>
+              &nbsp;&nbsp;&nbsp;
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div>
+          <a href="/main" class="btn btn-outline-dark" style="width:400px;"
+             role="button" data-bs-toggle="button">Back</a></div><br>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
